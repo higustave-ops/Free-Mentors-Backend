@@ -1,0 +1,30 @@
+language: node_js
+
+node_js: 
+  - "10.10"
+
+services: 
+- postgresql
+
+before_script:
+- psql -c "create database freementors;" -U postgres
+
+cache:
+  directories:
+  - node_modules
+
+install: npm install
+
+script: 
+- npm run migrate
+- npm run render-users
+- npm run render-sessions
+- npm run render-reviews
+- npm test
+
+after_script: 
+- npm run migrate
+- npm run render-users
+- npm run render-sessions
+- npm run render-reviews
+- npm run coverage
